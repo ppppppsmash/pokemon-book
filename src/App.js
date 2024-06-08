@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getAllPokemon } from './utils/pokemon';
+import { getAllPokemon, getPokemon } from './utils/pokemon';
 
 import './App.css';
 
@@ -11,11 +11,21 @@ function App() {
     const fetchPokemonData = async () => {
       //all pokemon get
       let res = await getAllPokemon(initialURL);
-      console.log(res);
+      //every pokemon detail info
+      loadPokemon(res.results);
       setLoading(false);
     }
     fetchPokemonData();
   }, []);
+
+  const loadPokemon = (data) => {
+    let _pokemonData = Promise.all(
+      data.map((pokemon) => {
+        let pokemonRecord = getPokemon(pokemon.url);
+        return pokemonRecord;
+      })
+    );
+  }
 
   return (
     <div className="App">
