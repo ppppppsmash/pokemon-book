@@ -21,6 +21,7 @@ function App() {
       //every pokemon detail info
       loadPokemon(res.results);
       setNextURL(res.next);
+      setPrevURL(res.previous);
       setLoading(false);
     }
     fetchPokemonData();
@@ -38,14 +39,22 @@ function App() {
   //onsole.log(pokemonData);
 
   const handlePrevPage = async () => {
+    if (!prevURL) return;
     setLoading(true);
     let data = await getAllPokemon(prevURL);
+    await loadPokemon(data.results);
+    setNextURL(data.next);
+    setPrevURL(data.previous);
+    setLoading(false);
   };
 
   const handleNextPage = async () => {
     setLoading(true);
     let data = await getAllPokemon(nextURL);
+    console.log(data.results)
     await loadPokemon(data.results);
+    setNextURL(data.next);
+    setPrevURL(data.previous);
     setLoading(false);
   };
 
